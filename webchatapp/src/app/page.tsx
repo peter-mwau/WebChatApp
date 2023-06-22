@@ -1,17 +1,17 @@
 "use client"
 
 // import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 
 export default function Home() {
   const [messages, setMessages] = useState([])
-  const inputRef = useRef(null)
+  let inputRef = null
 
   function sendMessage() {
-    const message = inputRef.current.value.trim()
+    const message = inputRef.value.trim()
     if (message !== "") {
       setMessages(prevMessages => [...prevMessages, { sender: true, text: message }])
-      inputRef.current.value = ""
+      inputRef.value = ""
     }
   }
 
@@ -27,9 +27,14 @@ export default function Home() {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`bg-${message.sender ? 'blue-300' : 'transparent'} rounded-sm h-auto shadow-md p-2 w-3/4 mt-2 ${message.sender ? 'self-end' : 'self-start'}`}
+              className={`relative bg-${message.sender ? 'blue-300' : 'gray-300'} rounded-md h-auto shadow-md w-3/4 mt-2 ${message.sender ? 'self-end' : 'self-start'}`}
             >
-              {message.text}
+              <div
+                className={`w-4 h-4 bg-${message.sender ? 'blue-300' : 'gray-300'} absolute ${message.sender ? 'bottom-0 right-0' : 'bottom-0 left-0'} transform rotate-45`}
+              />
+              <div className="p-2">
+                {message.text}
+              </div>
             </div>
           ))}
         </div>
@@ -38,15 +43,18 @@ export default function Home() {
         <div className="flex">
           <input
             type="text"
-            ref={inputRef}
+            ref={ref => (inputRef = ref)}
             className="flex-grow rounded-sm shadow-md p-2 mr-2"
             placeholder="Type your message..."
           />
           <button onClick={sendMessage}>
-            <img src="send.svg" alt="Send" className="h-10 w-10  hover:cursor-pointer hover:shadow-sm" />
+            <img src="/send.svg" alt="Send" className="h-10 hover:cursor-pointer hover:shadow-sm" />
           </button>
         </div>
       </div>
     </div>
   )
 }
+
+
+
