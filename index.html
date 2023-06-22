@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GPT3.5 Chat Api</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <main>
+        <h1>Welcome to the ChatGpt Api</h1>
+        <form id="chat-form" action="">
+            <input type="text" id="message" name="message" placeholder="Type a message...">
+            <button type="submit">Send</button>
+    </main>
+    <div id="chat-log">
+
+    </div>
+    <script src="index.js">
+        const chatlog = document.getElementById('chat-log');
+        const message = document.getElementById('message');
+        const chatForm = document.getElementById('chat-form');
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const messageText = message.value;
+            message.value = '';
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add('message-sent');
+            messageElement.innerHTML = '<div class="message-sent">$messageText  </div>';
+        chatlog.appendChild(messageElement);
+        chatlog.scrollTop = chatlog.scrollHeight;
+        fetch("https://localhost:3000",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: messageText
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add('message-received');
+            messageElement.innerHTML = '<div class="message-received">$data.completion.content</div>';
+            chatlog.appendChild(messageElement);
+            chatlog.scrollTop = chatlog.scrollHeight;
+        })
+    })
+
+    
+
+    </script>
+</body>
+
+</html>
