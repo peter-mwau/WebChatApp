@@ -1,6 +1,7 @@
 "use client"
 
 // import Image from 'next/image'
+import Navbar from '../../components/navbar'
 import { useState } from 'react'
 
 export default function Home() {
@@ -19,9 +20,7 @@ export default function Home() {
     <div className="bg-gray-200 h-screen flex flex-col text-black">
       <div className="flex-grow p-4 overflow-y-auto">
         <div className="flex flex-col mb-4">
-          <div className="bg-blue-300 text-black font-serif font-bold text-xl py-2 px-4 mx-auto w-full items-center justify-center flex">
-            Welcome
-          </div>
+          <Navbar />
         </div>
         <div className="flex flex-col mb-4">
           {messages.map((message, index) => (
