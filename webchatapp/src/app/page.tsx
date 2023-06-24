@@ -1,6 +1,7 @@
 "use client"
 
 // import Image from 'next/image'
+import axios from 'axios';
 import Navbar from '../../components/navbar'
 import { useState } from 'react'
 
@@ -9,12 +10,33 @@ export default function Home() {
   let inputRef = null
 
   function sendMessage() {
-    const message = inputRef.value.trim()
-    if (message !== "") {
-      setMessages(prevMessages => [...prevMessages, { sender: true, text: message }])
-      inputRef.value = ""
+    const message = inputRef.value.trim();
+    if (message !== '') {
+      // Send user message to the backend server
+      axios.post('/api/chat', { message })
+        .then((response) => {
+          const reply = response.data.reply;
+          setMessages(prevMessages => [...prevMessages, { sender: false, text: reply }]);
+          inputRef.value = '';
+        })
+        .catch((error) => {
+          if (error.response) {
+            // The request was made, but the server responded with an error status
+            console.error('Server Error:', error.response.status);
+            // Handle the error condition, e.g., show an error message to the user
+          } else if (error.request) {
+            // The request was made, but no response was received
+            console.error('No Response:', error.request);
+            // Handle the error condition, e.g., show an error message to the user
+          } else {
+            // Something happened in setting up the request that triggered an error
+            console.error('Request Error:', error.message);
+            // Handle the error condition, e.g., show an error message to the user
+          }
+        });
     }
   }
+  
 
   return (
     <div className="bg-gray-200 h-screen flex flex-col text-black">
